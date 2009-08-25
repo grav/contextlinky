@@ -2,8 +2,9 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 from waveapi.ops import OpBuilder
+from google.appengine.api import urlfetch
 
-APP_VERSION = '6'
+APP_VERSION = '7'
 
 def OnParticipantsChanged(properties, context):
   """Invoked when any participants have been added/removed."""
@@ -26,14 +27,50 @@ def OnBlipSubmitted(properties, context):
       OpBuilder(context).DocumentAppendMarkup(blip.waveId, blip.waveletId, response_blip.GetId(), reply)
 
 def AddContext(text):
-  dict = {
-    "cat": "Katze",
-    "hat": "Hut"
+  url = "http://dev.wikipedia-lab.org/WikipediaOntologyAPIv3/Service.asmx"
+  method = "POST"
+  headers = {
+    "Soapaction": "http://tempuri.org/GetTopCandidateIDFromKeyword"
   }
-  
-  for (k,v) in dict.items():
-    text = text.replace(k,v)
-  return text
+
+  payload = """
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <SOAP-ENV:Envelope
+
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+
+    SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+
+      <SOAP-ENV:Body>
+
+        <GetCandidatesFromKeyword xmlns="http://tempuri.org/">
+
+          <Keyword xsi:type="xsd:string">%s</Keyword>
+
+          <language xsi:type="xsd:string">English</language>
+
+        </GetCandidatesFromKeyword>
+
+      </SOAP-ENV:Body>
+
+    </SOAP-ENV:Envelope>
+
+  """ % text
+
+  result = urlfetcher.fetch(url, payload, method, headers)
+
+  if result.status_code == 200:
+    return result.content
+  else:
+    return payload
+
 
 def Notify(context):
   root_wavelet = context.GetRootWavelet()
