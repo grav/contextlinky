@@ -16,11 +16,20 @@ def OnRobotAdded(properties, context):
   root_wavelet.CreateBlip().GetDocument().SetText("I'm alive! Version" + APP_VERSION)
 
 def OnBlipSubmitted(properties, context):
-  root_wavelet = context.GetRootWavelet()
   for blip in context.GetBlips():
     text = blip.GetDocument().GetText()
     if blip.GetCreator()!="contextlinky@appspot.com": # is this neccesary?
-      root_wavelet.CreateBlip().GetDocument().SetText("Du sagde: "+text)
+      blip.CreateChild().GetDocument().SetText("Du sagde (ca.): "+AddContext(text))
+
+def AddContext(text):
+  dict = {
+    "cat": "Katze",
+    "hat": "Hut"
+  }
+  
+  for (k,v) in dict.items():
+    text = text.replace(k,v)
+  return text
 
 def Notify(context):
   root_wavelet = context.GetRootWavelet()
