@@ -2,7 +2,7 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 
-APP_VERSION = '3.1'
+APP_VERSION = '4'
 
 def OnParticipantsChanged(properties, context):
   """Invoked when any participants have been added/removed."""
