@@ -19,7 +19,7 @@ def OnBlipCreated(properties, context):
   root_wavelet = context.GetRootWavelet()
   for blip in context.GetBlips():
     text = blip.GetDocument().GetText()
-    if !text.find("Du sagde: "):
+    if blip.getCreator()!="contextlinky@appspot.com": # is this neccesary?
       root_wavelet.CreateBlip().GetDocument().SetText("Du sagde: "+text)
 
 def Notify(context):
