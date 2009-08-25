@@ -1,6 +1,7 @@
 from waveapi import events
 from waveapi import model
 from waveapi import robot
+from waveapi.ops import OpBuilder
 
 APP_VERSION = '6'
 
