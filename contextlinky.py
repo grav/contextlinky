@@ -2,7 +2,7 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 
-APP_VERSION = '4'
+APP_VERSION = '5'
 
 def OnParticipantsChanged(properties, context):
   """Invoked when any participants have been added/removed."""
@@ -17,9 +17,12 @@ def OnRobotAdded(properties, context):
 
 def OnBlipSubmitted(properties, context):
   for blip in context.GetBlips():
-    text = blip.GetDocument().GetText()
     if blip.GetCreator()!="contextlinky@appspot.com": # is this neccesary?
-      blip.CreateChild().GetDocument().SetText("Auf deutsch: "+AddContext(text))
+      text = blip.GetDocument().GetText()
+      reply = "Auf <b>Deutsch</b>: " + AddContext(text)
+      response_blip = blip.CreateChild()
+      #  def DocumentAppendMarkup(self, wave_id, wavelet_id, blip_id, content):
+      OpBuilder(context).DocumentAppendMarkup(blip.waveId, blip.waveletId, response_blip.GetId(), reply)
 
 def AddContext(text):
   dict = {
