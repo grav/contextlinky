@@ -2,7 +2,7 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 
-APP_VERSION = '3'
+APP_VERSION = '3.1'
 
 def OnParticipantsChanged(properties, context):
   """Invoked when any participants have been added/removed."""
@@ -37,7 +37,7 @@ def Notify(context):
 
 if __name__ == '__main__':
   myRobot = robot.Robot('contextlinky', 
-      image_url='http://contextlinky.appspot.com/icon.png',
+      image_url='http://contextlinky.appspot.com/assets/icon.png',
       version=APP_VERSION,
       profile_url='http://contextlinky.appspot.com/')
   myRobot.RegisterHandler(events.WAVELET_PARTICIPANTS_CHANGED, OnParticipantsChanged)
