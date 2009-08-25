@@ -4,6 +4,8 @@ from waveapi import robot
 from waveapi.ops import OpBuilder
 from google.appengine.api import urlfetch
 
+import logging
+
 APP_VERSION = '7'
 
 def OnParticipantsChanged(properties, context):
@@ -30,7 +32,8 @@ def AddContext(text):
   url = "http://dev.wikipedia-lab.org/WikipediaOntologyAPIv3/Service.asmx"
   method = "POST"
   headers = {
-    "Soapaction": "http://tempuri.org/GetTopCandidateIDFromKeyword"
+    "Soapaction": "http://tempuri.org/GetTopCandidateIDFromKeyword",
+    "Content-Type": "text/xml"
   }
 
   payload = """
@@ -63,6 +66,8 @@ def AddContext(text):
     </SOAP-ENV:Envelope>
 """ % text.strip()
 
+  logging.debug(payload)
+
   result = urlfetch.fetch(url, payload, method, headers)
 
   return str(result.status_code)
@@ -78,6 +83,7 @@ def Notify(context):
   root_wavelet.CreateBlip().GetDocument().SetText("Hi everybody!")
 
 if __name__ == '__main__':
+  logging.getLogger().setLevel(logging.DEBUG)
   myRobot = robot.Robot('contextlinky', 
       image_url='http://contextlinky.appspot.com/assets/icon.png',
       version=APP_VERSION,
