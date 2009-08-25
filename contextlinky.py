@@ -61,10 +61,11 @@ def AddContext(text):
       </SOAP-ENV:Body>
 
     </SOAP-ENV:Envelope>
+""" % text.strip()
 
-  """ % text
+  result = urlfetch.fetch(url, payload, method, headers)
 
-  result = urlfetcher.fetch(url, payload, method, headers)
+  return str(result.status_code)
 
   if result.status_code == 200:
     return result.content
