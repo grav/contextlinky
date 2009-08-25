@@ -2,7 +2,7 @@ from waveapi import events
 from waveapi import model
 from waveapi import robot
 
-APP_VERSION = '2'
+APP_VERSION = '3'
 
 def OnParticipantsChanged(properties, context):
   """Invoked when any participants have been added/removed."""
@@ -15,7 +15,7 @@ def OnRobotAdded(properties, context):
   root_wavelet = context.GetRootWavelet()
   root_wavelet.CreateBlip().GetDocument().SetText("I'm alive! Version" + APP_VERSION)
 
-def OnBlipCreated(properties, context):
+def OnBlipSubmitted(properties, context):
   root_wavelet = context.GetRootWavelet()
   for blip in context.GetBlips():
     text = blip.GetDocument().GetText()
@@ -33,6 +33,6 @@ if __name__ == '__main__':
       profile_url='http://contextlinky.appspot.com/')
   myRobot.RegisterHandler(events.WAVELET_PARTICIPANTS_CHANGED, OnParticipantsChanged)
   myRobot.RegisterHandler(events.WAVELET_SELF_ADDED, OnRobotAdded)
-  myRobot.RegisterHandler(events.WAVELET_BLIP_CREATED, OnBlipCreated)
+  myRobot.RegisterHandler(events.BLIP_SUBMITTED, OnBlipSubmitted)
   myRobot.Run()
   
