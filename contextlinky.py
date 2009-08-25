@@ -19,7 +19,7 @@ def OnBlipSubmitted(properties, context):
   for blip in context.GetBlips():
     text = blip.GetDocument().GetText()
     if blip.GetCreator()!="contextlinky@appspot.com": # is this neccesary?
-      blip.CreateChild().GetDocument().SetText("Du sagde (ca.): "+AddContext(text))
+      blip.CreateChild().GetDocument().SetText("Auf deutsch: "+AddContext(text))
 
 def AddContext(text):
   dict = {
