@@ -1,5 +1,5 @@
 application: contextlinky
-version: 1
+version: 2
 runtime: python
 api_version: 1
 
@@ -8,3 +8,4 @@ handlers:
   script: contextlinky.py
 - url: /assets
   static_dir: assets
+  
